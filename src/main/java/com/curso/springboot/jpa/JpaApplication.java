@@ -2,11 +2,13 @@ package com.curso.springboot.jpa;
 
 import java.util.List;
 //import java.util.Optional;
+import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.curso.springboot.jpa.entities.Person;
 import com.curso.springboot.jpa.repositories.PersonRepository;
@@ -23,10 +25,66 @@ public class JpaApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		findOne();
-	
+		//findOne();
+		//list();
+		//create();
+		//modify();
+		delete();
 	}
 	
+	@Transactional
+	public void create() {
+		
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("---- Insercion en la base de datos ----");
+		System.out.println("Ingrese nombre: ");
+		String name = scanner.next();
+		System.out.println("Ingrese apellido: ");
+		String lastname = scanner.next();
+		System.out.println("Ingrese documento de identidad: ");
+		String idDocument = scanner.next();
+		System.out.println("Ingrese lenguage de programacion: ");
+		String programmingLanguage = scanner.next();
+		scanner.close();
+		
+		Person person = new Person(null, name, lastname, idDocument, programmingLanguage);
+		Person newP = personRepository.save(person);
+		
+		System.out.println(newP);
+		
+		personRepository.findById(newP.getId()).ifPresent(p -> System.out.println("Insercion exitosa del nuevo "
+				+ "usuario con el id " + p.getId()));
+		
+	}
+	
+	@Transactional
+	public void modify() {
+		Person person = new Person(7l, "Carlos", "Tobon", "1128469017", "C#");
+		Person newP = personRepository.save(person);
+		
+		System.out.println(newP);
+		
+	}
+	
+	
+	@Transactional
+	public void delete() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("---- Eliminacion en la base de datos ----");
+		System.out.println("Ingrese id: ");
+		Long id = Long.parseLong(scanner.next());
+		scanner.close();
+		
+		Person person = personRepository.findById(id).orElseThrow();
+		personRepository.delete(person);
+		
+		if(personRepository.findById(id).isEmpty())
+		{
+			System.out.println("Eliminacion Exitosa");
+		}
+	}
+	
+	@Transactional(readOnly = true)
 	public void findOne() {
 		//Person person = personRepository.findById(2l).orElseThrow();
 		/*Person person = null;

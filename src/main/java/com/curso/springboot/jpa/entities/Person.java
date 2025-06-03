@@ -27,11 +27,12 @@ public class Person {
 	
 	public Person() {}
 
-	public Person(Long id, String name, String lastname, String programmingLanguage) {
+	public Person(Long id, String name, String lastname, String idDocument, String programmingLanguage) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.lastname = lastname;
+		this.idDocument = idDocument;
 		this.programmingLanguage = programmingLanguage;
 	}
 	
