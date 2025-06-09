@@ -1,6 +1,7 @@
 package com.curso.springboot.jpa;
 
 import java.util.List;
+import java.util.Optional;
 //import java.util.Optional;
 import java.util.Scanner;
 
@@ -28,8 +29,8 @@ public class JpaApplication implements CommandLineRunner {
 		//findOne();
 		//list();
 		//create();
-		//modify();
-		delete();
+		update();
+		//delete();
 	}
 	
 	@Transactional
@@ -58,11 +59,30 @@ public class JpaApplication implements CommandLineRunner {
 	}
 	
 	@Transactional
-	public void modify() {
-		Person person = new Person(7l, "Carlos", "Tobon", "1128469017", "C#");
-		Person newP = personRepository.save(person);
+	public void update() {
+		//Person person = new Person(7l, "Carlos", "Tobon", "1128469017", "C#");
 		
-		System.out.println(newP);
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("---- Modficacion en la base de datos ----");
+		System.out.println("Ingrese id del usuario a modificar: ");
+		Long id = scanner.nextLong();
+			
+		Optional<Person> optionalPerson = personRepository.findById(id);
+
+		optionalPerson.ifPresentOrElse(person -> {
+			System.out.println(person);
+			System.out.println("Ingrese el lenguaje de programacion ");
+			String programmingLanguage = scanner.next();
+
+			person.setProgrammingLanguage(programmingLanguage);
+
+			Person newP = personRepository.save(person);
+			System.out.println(newP);
+		}, () -> {
+			System.out.println("No se encontro el usuario");
+		});
+		
+		scanner.close();
 		
 	}
 	
