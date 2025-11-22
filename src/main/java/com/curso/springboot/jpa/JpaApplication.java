@@ -29,8 +29,8 @@ public class JpaApplication implements CommandLineRunner {
 		//findOne();
 		//list();
 		//create();
-		update();
-		//delete();
+		//update();
+		delete();
 	}
 	
 	@Transactional
@@ -95,13 +95,24 @@ public class JpaApplication implements CommandLineRunner {
 		Long id = Long.parseLong(scanner.next());
 		scanner.close();
 		
-		Person person = personRepository.findById(id).orElseThrow();
-		personRepository.delete(person);
+		//Person person = personRepository.findById(id).orElseThrow();
+		//personRepository.delete(person);
+		//personRepository.deleteById(id);
 		
-		if(personRepository.findById(id).isEmpty())
-		{
-			System.out.println("Eliminacion Exitosa");
-		}
+		
+		Optional<Person> optPerson = personRepository.findById(id);
+				
+		optPerson.ifPresentOrElse(person -> {
+			
+			personRepository.delete(person);
+			System.out.println("Eliminacion completa");
+			
+			
+		}, () -> {
+			System.out.println("No existe en la base de datos");
+			} 
+		);
+		
 	}
 	
 	@Transactional(readOnly = true)
