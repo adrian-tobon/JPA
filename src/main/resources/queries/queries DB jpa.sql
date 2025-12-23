@@ -3,7 +3,7 @@ create DATABASE db_springboot;
 --use db_springboot;
 
 create table db_springboot.persons(
-    id_person bigint,
+    id_person bigint AUTO_INCREMENT,
 	name varchar(255),
     lastname varchar(255),    
 	id_document varchar(255),

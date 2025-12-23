@@ -7,9 +7,25 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.curso.springboot.jpa.entities.Person;
+import com.curso.springboot.jpa.dto.PersonDTO;
 
 public interface PersonRepository extends CrudRepository<Person, Long>{
 	
+	@Query("select new com.curso.springboot.jpa.dto.PersonDTO(p.name,p.lastname) from Person p")
+	List<PersonDTO> findAllPersonalizedDTOPerson();	
+	
+	@Query("select new Person(p.name,p.lastname) from Person p")
+	List<Person> findAllPersonalizedPerson();
+	
+	@Query("select p.name from Person p where p.id = ?1")
+	String getNameById(Long id);
+	
+	@Query("select p.id from Person p where p.name = ?1")
+	Long getId(String name);
+	
+	
+	@Query("select concat(p.name,' ',p.lastname) as fullname from Person p where p.id = ?1")
+	String getFullNameById(Long id);
 	
 	List<Person> findByProgrammingLanguage(String programmingLanguage);	
 	
@@ -23,6 +39,15 @@ public interface PersonRepository extends CrudRepository<Person, Long>{
 	
 	@Query("select p from Person p where p.programmingLanguage = ?1")
 	List<Person> buscarPorProgrammingLanguage(String programmingLanguage);
+	
+	@Query("select p.id, p.name, p.lastname, p.idDocument, p.programmingLanguage from Person p")
+	List<Object[]> obtenerFullPersonData();
+	
+	@Query("select p, p.programmingLanguage from Person p")
+	List<Object[]> findAllMixPerson();
+	
+	@Query("select p.id, p.name, p.lastname, p.idDocument, p.programmingLanguage from Person p where p.id = ?1")
+	Optional<Object> obtenerFullPersonDataById(Long id);
 	
 	@Query("select p.name, p.programmingLanguage from Person p")
 	List<Object[]> obtenerPersonData();
