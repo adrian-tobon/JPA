@@ -11,9 +11,41 @@ import com.curso.springboot.jpa.dto.PersonDTO;
 
 public interface PersonRepository extends CrudRepository<Person, Long>{
 	
+	List<Person> findByIdBetween(Long x1,Long x2);
+	
+	List<Person> findByNameBetween(String start,String end);
+	
+	@Query("select p from Person p where p.name between ?1 and ?2")
+	List<Person> buscarPorRangoName(String start,String end);
+	
+	@Query("select p from Person p where p.id between ?1 and ?2")
+	List<Person> buscarPorRangoId(Long x1,Long x2);
+		
+	//@Query("select concat(p.name,' ',p.lastname) as fullname from Person p")
+	@Query("select p.name||' '||p.lastname as fullname from Person p")
+	List<String> findAllFullNames();
+	
+	@Query("select lower(concat(p.name,' ',p.lastname)) as fullname from Person p")
+	List<String> findAllLowerNames();
+	
+	@Query("select upper(concat(p.name,' ',p.lastname)) as fullname from Person p")
+	List<String> findAllUpperNames();
+	
+	@Query("select p.name from Person p")
+	List<String> findAllNames();
+	
+	@Query("select distinct(p.name) from Person p")
+	List<String> findAllDistinctNames();
+	
+	@Query("select distinct(p.programmingLanguage) from Person p")
+	List<String> findAllDistinctProgrammingLanguages();
+	
+	@Query("select count(distinct(p.programmingLanguage)) from Person p")
+	Long findAllDistinctProgrammingLanguagesCount();
+	
 	@Query("select new com.curso.springboot.jpa.dto.PersonDTO(p.name,p.lastname) from Person p")
 	List<PersonDTO> findAllPersonalizedDTOPerson();	
-	
+			
 	@Query("select new Person(p.name,p.lastname) from Person p")
 	List<Person> findAllPersonalizedPerson();
 	

@@ -32,7 +32,8 @@ public class JpaApplication implements CommandLineRunner {
 		// create();
 		// update();
 		// delete();
-		personalizedQueries();
+		// personalizedQueries();
+		 personalizedQueries2();
 	}
 
 	@Transactional(readOnly = true)
@@ -103,16 +104,70 @@ public class JpaApplication implements CommandLineRunner {
 			
 		});*/
 		
-		List<PersonDTO> personRegs = personRepository.findAllPersonalizedDTOPerson();
+		/*List<PersonDTO> personRegs = personRepository.findAllPersonalizedDTOPerson();
 		
 		personRegs.forEach(reg -> {
 			System.out.println(reg.getName());
 			System.out.println(reg.getLastname());
 			
-		});
+		});*/
 		
+		/*List<String> names = personRepository.findAllNames();
+		names.forEach(System.out::println);*/
+		
+		List<String> DistinctNames = personRepository.findAllDistinctNames();
+		DistinctNames.forEach(System.out::println);
+		
+		
+		List<String> DistinctPL = personRepository.findAllDistinctProgrammingLanguages();
+		DistinctPL.forEach(System.out::println);
+		
+		
+		System.out.println("numero de lenguajes: " + personRepository.findAllDistinctProgrammingLanguagesCount());
 		//scanner.close();
 
+	}
+	
+	@Transactional(readOnly = true)
+	public void personalizedQueries2() {
+		
+		/*List<String> fullNames = personRepository.findAllFullNames();
+		fullNames.forEach(System.out::println);
+		
+		List<String> lowerNames = personRepository.findAllLowerNames();
+		lowerNames.forEach(System.out::println);
+		
+		List<String> upperNames = personRepository.findAllUpperNames();
+		upperNames.forEach(System.out::println);*/
+		
+		/*Scanner scanner = new Scanner(System.in);
+		System.out.println("---- busqueda entre dos ids ----");
+		System.out.println("Ingrese id inical: ");
+		Long x1  = scanner.nextLong();
+		System.out.println("Ingrese id final: ");
+		Long x2  = scanner.nextLong();
+		
+		//List<Person> listPerson = personRepository.buscarPorRangoId(x1, x2);
+		List<Person> listPerson = personRepository.findByIdBetween(x1, x2);
+		listPerson.forEach(p -> {
+			System.out.println(p.toString());			
+		});	*/
+		
+				
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("---- busqueda nombre entre dos letras ----");
+		System.out.println("Ingrese letra inical: ");
+		String start  = scanner.next();
+		System.out.println("Ingrese letra final: ");
+		String end = scanner.next();
+		
+		List<Person> listPerson = personRepository.findByNameBetween(start,end);
+		listPerson.forEach(p -> {
+			System.out.println(p);			
+		});
+		
+		
+		scanner.close();
 	}
 
 	@Transactional
