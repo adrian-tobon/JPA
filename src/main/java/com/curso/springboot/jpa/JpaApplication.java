@@ -1,5 +1,6 @@
 package com.curso.springboot.jpa;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 //import java.util.Optional;
@@ -154,20 +155,57 @@ public class JpaApplication implements CommandLineRunner {
 		});	*/
 		
 				
-		Scanner scanner = new Scanner(System.in);
+		/*Scanner scanner = new Scanner(System.in);
 		System.out.println("---- busqueda nombre entre dos letras ----");
 		System.out.println("Ingrese letra inical: ");
 		String start  = scanner.next();
 		System.out.println("Ingrese letra final: ");
 		String end = scanner.next();
 		
-		List<Person> listPerson = personRepository.findByNameBetween(start,end);
+		List<Person> listPerson = personRepository.buscarPorRangoName(start,end);
+		//List<Person> listPerson = personRepository.findByNameBetweenOrderByNameDescLastnameAsc(start,end);
 		listPerson.forEach(p -> {
 			System.out.println(p);			
 		});
 		
 		
-		scanner.close();
+		scanner.close();*/
+		
+		//List<Person> persons = personRepository.getAllPersonOrdered();
+		/*List<Person> persons = personRepository.findAllByOrderByNameAscLastnameAsc();
+		persons.forEach(System.out::println);*/
+		
+		//Long count = personRepository.count();
+		Long count = personRepository.getPersonsCount();
+		Long max = personRepository.getMaxId();
+		Long min = personRepository.getMinId();
+		Long sum = personRepository.getSumId();
+		Long avg = personRepository.getAvgId();
+		
+		
+		System.out.println(count + " registro(s)");
+		System.out.println("maximo id: " + max);
+		System.out.println("minimo id: " + min);
+		System.out.println("sum id: " + sum);
+		System.out.println("avg id: " + avg);
+		
+		
+		List<Object[]> personNamesLength = personRepository.getPersonNameLength();
+		personNamesLength.forEach(pnl ->{
+			System.out.println(pnl[0] + " " + pnl[1]);			
+		});
+		
+		
+		List<Object[]> minNameLength = personRepository.getMinNameLength();
+		minNameLength.forEach(values ->{
+			System.out.println("El nombre mas corto es: " + values[0] + " con " + values[1] + " caracteres");
+		});
+		
+		
+		List<Object[]> maxNameLength = personRepository.getMaxNameLength();
+		maxNameLength.forEach(values ->{
+			System.out.println("El nombre mas corto es: " + values[0] + " con " + values[1] + " caracteres");
+		});
 	}
 
 	@Transactional

@@ -11,11 +11,40 @@ import com.curso.springboot.jpa.dto.PersonDTO;
 
 public interface PersonRepository extends CrudRepository<Person, Long>{
 	
+	@Query("select p.name, length(p.name) from Person p order by length(p.name) asc fetch first 1 row only")
+	List<Object[]> getMinNameLength();
+	
+	@Query("select p.name, length(p.name) from Person p order by length(p.name) desc fetch first 1 row only")
+	List<Object[]> getMaxNameLength();
+	
+	@Query("select p.name,length(p.name) from Person p")
+	List<Object[]> getPersonNameLength();
+	
+	@Query("select count(p) from Person p")
+	Long getPersonsCount();
+	
+	@Query("select p from Person p order by p.name,p.lastname")
+	List<Person> getAllPersonOrdered();
+	
+	@Query("select max(p.id) from Person p")
+	Long getMaxId();
+	
+	@Query("select min(p.id) from Person p")
+	Long getMinId();
+	
+	@Query("select sum(p.id) from Person p")
+	Long getSumId();
+	
+	@Query("select avg(p.id) from Person p")
+	Long getAvgId();
+	
+	List<Person> findAllByOrderByNameAscLastnameAsc();
+	
 	List<Person> findByIdBetween(Long x1,Long x2);
 	
-	List<Person> findByNameBetween(String start,String end);
+	List<Person> findByNameBetweenOrderByNameDescLastnameAsc(String start,String end);
 	
-	@Query("select p from Person p where p.name between ?1 and ?2")
+	@Query("select p from Person p where p.name between ?1 and ?2 order by p.name desc, p.lastname asc")
 	List<Person> buscarPorRangoName(String start,String end);
 	
 	@Query("select p from Person p where p.id between ?1 and ?2")
@@ -24,7 +53,7 @@ public interface PersonRepository extends CrudRepository<Person, Long>{
 	//@Query("select concat(p.name,' ',p.lastname) as fullname from Person p")
 	@Query("select p.name||' '||p.lastname as fullname from Person p")
 	List<String> findAllFullNames();
-	
+		
 	@Query("select lower(concat(p.name,' ',p.lastname)) as fullname from Person p")
 	List<String> findAllLowerNames();
 	
