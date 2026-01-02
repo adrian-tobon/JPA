@@ -1,6 +1,6 @@
 package com.curso.springboot.jpa;
 
-import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 //import java.util.Optional;
@@ -30,11 +30,11 @@ public class JpaApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		// findOne();
 		// list();
-		// create();
+		 create();
 		// update();
 		// delete();
 		// personalizedQueries();
-		 personalizedQueries2();
+		// personalizedQueries2();
 	}
 
 	@Transactional(readOnly = true)
@@ -196,16 +196,26 @@ public class JpaApplication implements CommandLineRunner {
 		});
 		
 		
-		List<Object[]> minNameLength = personRepository.getMinNameLength();
+		//List<Object[]> minNameLength = personRepository.getMinNameLength();
+		List<Object[]> minNameLength = personRepository.getShorterName();
 		minNameLength.forEach(values ->{
 			System.out.println("El nombre mas corto es: " + values[0] + " con " + values[1] + " caracteres");
 		});
 		
 		
-		List<Object[]> maxNameLength = personRepository.getMaxNameLength();
+		//List<Object[]> maxNameLength = personRepository.getMaxNameLength();
+		List<Object[]> maxNameLength = personRepository.getLongerName();
 		maxNameLength.forEach(values ->{
-			System.out.println("El nombre mas corto es: " + values[0] + " con " + values[1] + " caracteres");
+			System.out.println("El nombre mas largo es: " + values[0] + " con " + values[1] + " caracteres");
 		});
+		
+		List<Person> persons = personRepository.getPersonByIds(Arrays.asList(1l,2l,5l));
+		persons.forEach(System.out::println);
+		
+		
+		List<Person> Notpersons = personRepository.getPersonNotInIds(Arrays.asList(1l,2l,5l));
+		Notpersons.forEach(System.out::println);
+		
 	}
 
 	@Transactional

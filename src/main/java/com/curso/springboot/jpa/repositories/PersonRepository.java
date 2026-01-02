@@ -11,6 +11,20 @@ import com.curso.springboot.jpa.dto.PersonDTO;
 
 public interface PersonRepository extends CrudRepository<Person, Long>{
 	
+	
+	@Query("select p from Person p where p.id in ?1")
+	List<Person> getPersonByIds(List<Long> ids);
+	
+	@Query("select p from Person p where p.id not in ?1")
+	List<Person> getPersonNotInIds(List<Long> ids);
+	
+	@Query("select p.name, length(p.name) from Person p where length(p.name)=(select min(length(p.name)) from Person p)")
+	List<Object[]> getShorterName();
+	
+	@Query("select p.name, length(p.name) from Person p where length(p.name)=(select max(length(p.name)) from Person p)")
+	List<Object[]> getLongerName();	
+	
+	
 	@Query("select p.name, length(p.name) from Person p order by length(p.name) asc fetch first 1 row only")
 	List<Object[]> getMinNameLength();
 	
