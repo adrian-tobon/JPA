@@ -18,3 +18,5 @@ INSERT INTO db_springboot.persons (name, lastname, id_document, programming_lang
 INSERT INTO db_springboot.persons (name, lastname, id_document, programming_language) VALUES ('Maria', 'Roe', '1363845469' ,'Java');
 INSERT INTO db_springboot.persons (name, lastname, id_document, programming_language) VALUES ('Josefa', 'Rae', '9874624615' ,'Java');
 
+alter table db_springboot.persons add column created_at datetime;
+alter table db_springboot.persons add column updated_at datetime;
